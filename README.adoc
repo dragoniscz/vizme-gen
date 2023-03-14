@@ -1,0 +1,19 @@
+= Visualization framework
+
+== Visualize component
+
+Example:
+```
+./visualize.py spotify blobs output --normalize
+```
+
+Takes spotify dataset (with normalization) and visualize it like blobs. Images are saved into "output" folder.
+
+== Average component
+
+Example:
+```
+./average.py output
+```
+
+Takes folders in "output" folder and makes average of all image in this subfolder.
