@@ -43,9 +43,13 @@ class DatasetPipeline(abc.ABC):
 
 class Parse(argparse.Action):
     from .spotify import SpotifyDatasetPipeline
+    from .recipes import RecipesDatasetPipeline
+    from .breast_cancer import  BreastCancerDatasetPipeline
 
     choices = {
         'spotify': SpotifyDatasetPipeline(),
+        'recipes': RecipesDatasetPipeline(),
+        'breastCancer': BreastCancerDatasetPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):

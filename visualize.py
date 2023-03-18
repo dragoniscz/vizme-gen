@@ -1,5 +1,6 @@
 import argparse
 import pandas as pd
+import json
 
 from vizme.preprocessing import normalize, quantize
 
@@ -14,7 +15,7 @@ def main(args):
         if args['norm']:
             dataset = normalize(dataset)
 
-        args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'])
+        args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'], args['parameters'])
         return 0
     except FileNotFoundError:
         print(f'Cannot load datasets.')
@@ -50,5 +51,10 @@ if __name__ == '__main__':
     parser.add_argument('output',
                         type=str,
                         help='Directory where visualization should be saved.')
+
+    parser.add_argument('-p', '--parameters',
+                        default=False,
+                        type=json.loads,
+                        help='The parameters of the visualization.')
 
     exit(main(vars(parser.parse_args())))

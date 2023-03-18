@@ -12,5 +12,5 @@ def quantize(df: pd.DataFrame, n_quantiles=1000, output_distribution="uniform", 
     subset = df.select_dtypes(include='number')
     from sklearn.preprocessing import quantile_transform
     transformed = quantile_transform(subset, n_quantiles=n_quantiles, output_distribution=output_distribution, random_state=random_state)
-    df[subset.columns] = transformed
+    df.loc[:,subset.columns] = transformed
     return df

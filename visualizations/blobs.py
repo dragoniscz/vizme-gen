@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import pandas as pd
 
@@ -14,7 +15,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         self._coords = None
         self._means = None
 
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
         correlation = np.corrcoef(data, rowvar=False)
         assert correlation.shape[0] == len(data.columns) and correlation.shape[1] == len(data.columns)
 

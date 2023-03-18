@@ -2,12 +2,32 @@
 
 == Visualize component
 
+=== Spotify
 Example:
 ```
 ./visualize.py spotify blobs output --normalize
 ```
+```
+./visualize.py spotify radial _output/spotify/radial --quantize "--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}"
+```
 
 Takes spotify dataset (with normalization) and visualize it like blobs. Images are saved into "output" folder.
+
+=== Recipes
+```
+./visualize.py recipes blobs _output/recipes/blobs
+```
+```
+./visualize.py recipes radial _output/recipes/radial "--parameters={ \"colorMapPath\": \"data/ingredientsMap.csv\"}"
+```
+
+=== Breast cancer
+```
+./visualize.py breastCancer blobs _output/breastCancer/blobs --quantize
+```
+```
+./visualize.py breastCancer radial _output/breastCancer/radial --quantize "--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}"
+```
 
 == Average component
 

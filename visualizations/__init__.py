@@ -1,6 +1,7 @@
 import abc
 import argparse
-
+import json
+import os
 import numpy as np
 import pandas as pd
 
@@ -8,7 +9,7 @@ import pandas as pd
 def create_folder(directory: str) -> None:
     try:
         import os
-        os.mkdir(directory)
+        os.makedirs(directory)
     except FileExistsError as _:
         pass
 
@@ -23,7 +24,7 @@ class VisualizationPipeline(abc.ABC):
         self._skip_existing = skip_existing
 
     @abc.abstractmethod
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
         pass
 
     @abc.abstractmethod
@@ -35,21 +36,24 @@ class VisualizationPipeline(abc.ABC):
         from tqdm import tqdm
         for key, label in tqdm(zip(data.index, labels), total=data.shape[0]):
             directory = f"{output}/{label}"
-            create_folder(directory)
+            if not os.path.isdir(directory):
+                create_folder(directory)
             filepath = f"{directory}/{key}.png"
             if not self._skip_existing or not file_exists(filepath):
                 self.transform_one(data.loc[key], filepath)
 
-    def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
-        self.fit(data, labels)
+    def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, parameters: json.loads) -> None:
+        self.fit(data, labels, parameters)
         return self.transform(data, labels, output)
 
 
 class Parse(argparse.Action):
     from .blobs import BlobsVisualizationPipeline
+    from .radial_plots import RadialPlotsVisualizationPipeline
 
     choices = {
         'blobs': BlobsVisualizationPipeline(),
+        'radial': RadialPlotsVisualizationPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):
