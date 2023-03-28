@@ -31,7 +31,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
 
         from sklearn.pipeline import make_pipeline
         from sklearn.preprocessing import QuantileTransformer
-        self._quantize = make_pipeline(QuantileTransformer()).fit(data.to_numpy())
+        self._quantize = make_pipeline(QuantileTransformer(n_quantiles=25)).fit(data.to_numpy())
 
     def transform_one(self, data: pd.DataFrame, output: str) -> None:
         import matplotlib.pyplot as plt
