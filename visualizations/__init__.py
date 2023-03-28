@@ -2,7 +2,6 @@ import abc
 import argparse
 import json
 import os
-import numpy as np
 import pandas as pd
 
 
@@ -21,6 +20,9 @@ def file_exists(filepath: str) -> bool:
 
 class VisualizationPipeline(abc.ABC):
     def __init__(self, skip_existing: bool = False):
+        self._skip_existing = skip_existing
+
+    def skip_existing(self, skip_existing: bool = True):
         self._skip_existing = skip_existing
 
     @abc.abstractmethod

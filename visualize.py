@@ -15,6 +15,9 @@ def main(args):
         if args['norm']:
             dataset = normalize(dataset)
 
+        if args['skip']:
+            args['visualization'].skip_existing()
+
         args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'], args['parameters'])
         return 0
     except FileNotFoundError:
@@ -27,6 +30,11 @@ if __name__ == '__main__':
     from visualizations import Parse as VisualizationParse
 
     parser = argparse.ArgumentParser(description='Tool to convert data into image.')
+
+    parser.add_argument('--skip', '--skip-existing',
+                        default=False,
+                        action='store_true',
+                        help='Skip existing files (do not generate them again)')
 
     parser.add_argument('datasets',
                         choices=list(DatasetParse.choices.keys()),

@@ -5,7 +5,7 @@
 === Spotify
 Example:
 ```
-./visualize.py spotify blobs output --normalize
+./visualize.py spotify blobs _output/spotify/blobs --normalize
 ```
 ```
 ./visualize.py spotify radial _output/spotify/radial --quantize "--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}"
@@ -33,7 +33,7 @@ Takes spotify dataset (with normalization) and visualize it like blobs. Images a
 
 Example:
 ```
-./average.py output
+./average.py _output/spotify/blobs
 ```
 
 Takes folders in "output" folder and makes average of all image in this subfolder.

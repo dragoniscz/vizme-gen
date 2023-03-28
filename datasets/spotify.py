@@ -34,7 +34,7 @@ CLASSES = [
 
 
 class SpotifyDatasetPipeline(DatasetPipeline):
-    def __init__(self, drop_duplicates=True, filter_classes=('Classical', 'Dance', 'Rock', 'Anime')):
+    def __init__(self, drop_duplicates=True, filter_classes=('Classical', 'Dance')):
         super().__init__()
         self.drop_duplicates = drop_duplicates
         self.filter_classes = filter_classes
@@ -44,10 +44,10 @@ class SpotifyDatasetPipeline(DatasetPipeline):
             .replace({'genre': {'Children’s Music': 'Children\'s Music'}})
 
     def _filter(self, data: pd.DataFrame) -> pd.DataFrame:
-        if self.drop_duplicates:
-            data = data.drop_duplicates(subset=['track_id'], keep=False)
         if self.filter_classes is not None:
             data = data[data['genre'].isin(self.filter_classes)]
+        if self.drop_duplicates:
+            data = data.drop_duplicates(subset=['track_id'], keep=False)
         return data
 
     def _transform(self, data: pd.DataFrame) -> pd.DataFrame:

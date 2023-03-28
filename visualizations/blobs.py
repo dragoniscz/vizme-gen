@@ -14,6 +14,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         super().__init__(skip_existing)
         self._coords = None
         self._means = None
+        self._quantize = None
 
     def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
         correlation = np.corrcoef(data, rowvar=False)
@@ -28,13 +29,19 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
 
         self._means = np.mean(data, axis=0)
 
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import QuantileTransformer
+        self._quantize = make_pipeline(QuantileTransformer()).fit(data.to_numpy())
+
     def transform_one(self, data: pd.DataFrame, output: str) -> None:
         import matplotlib.pyplot as plt
         from matplotlib import cm
 
+        qd = self._quantize.transform([data])[0]
+
         fig, ax = plt.subplots()
-        for key in data.index:
-            ax.add_patch(plt.Circle(self._coords.loc[key], radius=MIN_R + (MAX_R - MIN_R) * np.abs(data[key] - self._means.loc[key]), alpha=0.5, color=cm.jet(data[key])))
+        for idx, key in enumerate(data.index):
+            ax.add_patch(plt.Circle(self._coords.loc[key], radius=MIN_R + (MAX_R - MIN_R) * np.abs(data[key] - self._means.loc[key]), alpha=0.5, color=cm.seismic(qd[idx])))
         ax.axis('off')
         fig.set_size_inches(4, 4)
         plt.savefig(output, pad_inches=0, bbox_inches='tight', transparent=False)
