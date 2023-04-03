@@ -44,11 +44,13 @@ class DatasetPipeline(abc.ABC):
 class Parse(argparse.Action):
     from .spotify import SpotifyDatasetPipeline
     from .recipes import RecipesDatasetPipeline
+    from .recipes_weighted import RecipesWeightedDatasetPipeline
     from .breast_cancer import  BreastCancerDatasetPipeline
 
     choices = {
         'spotify': SpotifyDatasetPipeline(),
         'recipes': RecipesDatasetPipeline(),
+        'recipesWeighted': RecipesWeightedDatasetPipeline(),
         'breastCancer': BreastCancerDatasetPipeline(),
     }
 
