@@ -52,10 +52,12 @@ class VisualizationPipeline(abc.ABC):
 class Parse(argparse.Action):
     from .blobs import BlobsVisualizationPipeline
     from .radial_plots import RadialPlotsVisualizationPipeline
+    from .SOM import SOMVisualizationPipeline
 
     choices = {
         'blobs': BlobsVisualizationPipeline(),
         'radial': RadialPlotsVisualizationPipeline(),
+        'SOM': SOMVisualizationPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):
