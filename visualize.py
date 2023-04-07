@@ -1,6 +1,8 @@
 import argparse
 import pandas as pd
 import json
+import numpy as np
+from loguru import logger
 
 from vizme.preprocessing import normalize, quantize
 
@@ -18,10 +20,11 @@ def main(args):
         if args['skip']:
             args['visualization'].skip_existing()
 
-        args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'], args['parameters'])
+        args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'], args['n_samples'], args['parameters'])
         return 0
-    except FileNotFoundError:
-        print(f'Cannot load datasets.')
+    except FileNotFoundError as err:
+        logger.error(f'Cannot load datasets.')
+        logger.debug(err)
         return 1
 
 
@@ -59,6 +62,12 @@ if __name__ == '__main__':
     parser.add_argument('output',
                         type=str,
                         help='Directory where visualization should be saved.')
+
+    parser.add_argument('--n_samples',
+                        default=np.inf,
+                        type=np.int32,
+                        required=False,
+                        help='Number of samples of each target class. If not provided, all samples will be generated.')
 
     parser.add_argument('-p', '--parameters',
                         default=False,

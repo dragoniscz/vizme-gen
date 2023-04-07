@@ -2,6 +2,16 @@
 
 == Visualize component
 
+Command line parameters of the framework. TODO
+|===
+|Parameter | Description | Example
+
+| n_samples | Number of samples for each target class. If not provided, all samples will be generated. | `--n_samples 10`
+| parameters| Visualization specific parameters in json format. | `--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}`
+
+|===
+
+
 === Spotify
 Example:
 ```
