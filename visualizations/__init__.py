@@ -79,11 +79,13 @@ class Parse(argparse.Action):
     from .blobs import BlobsVisualizationPipeline
     from .radial_plots import RadialPlotsVisualizationPipeline
     from .SOM import SOMVisualizationPipeline
+    from .parallel_coordinates import ParallelCoordinatesVisualizationPipeline
 
     choices = {
         'blobs': BlobsVisualizationPipeline(),
         'radial': RadialPlotsVisualizationPipeline(),
         'SOM': SOMVisualizationPipeline(),
+        'parallel': ParallelCoordinatesVisualizationPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):
