@@ -46,12 +46,14 @@ class Parse(argparse.Action):
     from .recipes import RecipesDatasetPipeline
     from .recipes_weighted import RecipesWeightedDatasetPipeline
     from .breast_cancer import  BreastCancerDatasetPipeline
+    from .nutrients import NutrientsDatasetPipeline
 
     choices = {
         'spotify': SpotifyDatasetPipeline(),
         'recipes': RecipesDatasetPipeline(),
         'recipesWeighted': RecipesWeightedDatasetPipeline(),
         'breastCancer': BreastCancerDatasetPipeline(),
+        'nutrients': NutrientsDatasetPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):
