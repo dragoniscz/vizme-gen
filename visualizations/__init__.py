@@ -76,6 +76,34 @@ class VisualizationPipeline(abc.ABC):
 
         logger.info("Generation finished.")
 
+    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+        logger.info("Creating output dir: {0}", output)
+        create_folder(output)
+
+        labels_counts = labels.value_counts().apply(lambda x: x if x <= self._n_samples else self._n_samples)
+        total_samples = labels_counts.sum()
+        logger.info("Found {0} target classes, {1} samples at total.", labels_counts.index.shape[0], total_samples)
+
+        groups = {}
+        for target_class in labels_counts.index:
+            indexes_class = labels[labels == target_class].index.to_numpy()
+            class_idx = np.random.RandomState(seed=42).permutation(indexes_class)[0:labels_counts[target_class]]
+            groups[target_class] = data.loc[class_idx.tolist()].mean()
+
+        logger.info("Starting the generation of visualizations.")
+
+        from tqdm import tqdm
+        for target in tqdm(groups):
+            filepath = f"{output}/{target}.png"
+            if not self._skip_existing or not file_exists(filepath):
+                self.transform_one(groups[target], filepath)
+
+        logger.info("Generation finished.")
+
+    def fit_transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+        self.fit(data, labels)
+        return self.transform_group(data, labels, output)
+
     def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
         self.fit(data, labels)
         return self.transform(data, labels, output)

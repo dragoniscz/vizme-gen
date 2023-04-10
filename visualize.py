@@ -24,6 +24,10 @@ def main(args):
         if args['parameters']:
             args['visualization'].setup(args['parameters'])
 
+        if args['groups']:
+            args['visualization'].fit_transform_group(dataset, args['datasets'].labels(), args['output'])
+            return 0
+
         args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'])
         return 0
     except FileNotFoundError as err:
@@ -67,7 +71,7 @@ if __name__ == '__main__':
                         type=str,
                         help='Directory where visualization should be saved.')
 
-    parser.add_argument('--n_samples',
+    parser.add_argument('-s', '--n_samples',
                         default=np.inf,
                         type=np.int32,
                         required=False,
@@ -77,5 +81,10 @@ if __name__ == '__main__':
                         default=False,
                         type=json.loads,
                         help='The parameters of the visualization.')
+
+    parser.add_argument('--groups',
+                        default=False,
+                        action='store_true',
+                        help='Generate visualization for group of data')
 
     exit(main(vars(parser.parse_args())))

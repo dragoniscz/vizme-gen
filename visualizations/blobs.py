@@ -11,7 +11,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         self._coords = None
         self._means = None
         self._quantize = None
-        self._r_min = 0
+        self._r_min = 0.025
         self._r_max = 0.2
 
     def setup(self, parameters = None) -> None:
@@ -46,7 +46,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
 
         fig, ax = plt.subplots()
         for idx, key in enumerate(data.index):
-            ax.add_patch(plt.Circle(self._coords.loc[key], radius=self._r_min + (self._r_max - self._r_min) * np.abs(data[key] - self._means.loc[key]), alpha=0.5, color=cm.seismic(qd[idx])))
+            ax.add_patch(plt.Circle(self._coords.loc[key], radius=self._r_min + (self._r_max - self._r_min) * data[key], alpha=0.5, color=cm.seismic(qd[idx])))
         ax.axis('off')
         fig.set_size_inches(4, 4)
         plt.savefig(output, pad_inches=0, bbox_inches='tight', transparent=False)
