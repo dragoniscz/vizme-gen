@@ -42,36 +42,35 @@ class RadialPlotsVisualizationPipeline(VisualizationPipeline):
         self._scaleCoefficient = 100
         self._bottomMargin = 0
 
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
-        self._parameters = parameters
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         self._M = data.shape[1]
         self._width = 2 * np.pi / self._M
         self._indexes = list(range(1, self._M + 1))
         self._angles = [i * self._width for i in self._indexes]
         self._rescale = lambda y: (y - np.min(y)) / (np.max(y) - np.min(y))
 
-        if COLOR_MAP_PATH_PARAM in parameters:
-            colorMapPath = parameters[COLOR_MAP_PATH_PARAM]
+        if COLOR_MAP_PATH_PARAM in self._parameters:
+            colorMapPath = self._parameters[COLOR_MAP_PATH_PARAM]
             self._colorMap = pd.read_csv(colorMapPath, header=None).sort_values(by=1)
             self._ordering = self._colorMap.index
             self._colorMap = self._colorMap[1]
 
         # TODO mode
-        if CORRELATION_ORDERING in parameters and parameters[CORRELATION_ORDERING]:
+        if CORRELATION_ORDERING in self._parameters and self._parameters[CORRELATION_ORDERING]:
             self._ordering = get_feature_ordering_order_based_on_correlation(data)
 
-        if COLOR_MAP_PARAM in parameters:
-            color_map = parameters[COLOR_MAP_PARAM]
+        if COLOR_MAP_PARAM in self._parameters:
+            color_map = self._parameters[COLOR_MAP_PARAM]
             if color_map in customColorMaps:
                 self._colorMap = customColorMaps[color_map]
             else:
                 self._colorMap = color_map
 
-        if SCALE_COEFFICIENT_PARAM in parameters:
-            self._scaleCoefficient = parameters[SCALE_COEFFICIENT_PARAM]
+        if SCALE_COEFFICIENT_PARAM in self._parameters:
+            self._scaleCoefficient = self._parameters[SCALE_COEFFICIENT_PARAM]
 
-        if BOTTOM_MARGIN_PARAM in parameters:
-            self._bottomMargin = parameters[BOTTOM_MARGIN_PARAM]
+        if BOTTOM_MARGIN_PARAM in self._parameters:
+            self._bottomMargin = self._parameters[BOTTOM_MARGIN_PARAM]
 
     def transform_one(self, data: pd.DataFrame, output: str) -> None:
 

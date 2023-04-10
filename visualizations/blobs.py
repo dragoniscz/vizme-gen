@@ -16,7 +16,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         self._means = None
         self._quantize = None
 
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         correlation = np.corrcoef(data, rowvar=False)
         assert correlation.shape[0] == len(data.columns) and correlation.shape[1] == len(data.columns)
 

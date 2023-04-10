@@ -15,7 +15,7 @@ class SOMVisualizationPipeline(VisualizationPipeline):
         self._ordering = None        
 
 
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         """
         Note that som assumes datasets features to be objects that needs to be placed at a grid. (i.e., columns, not rows)
         Upon feature positioning, individual objects are visualized in a fairly standard way
@@ -56,18 +56,18 @@ class SOMVisualizationPipeline(VisualizationPipeline):
 
         #print(type(parameters),parameters)
         #TODO check for empty parameters
-        if type(parameters) is dict:
+        if type(self._parameters) is dict:
             # Modify default values if parameters present
-            if "n" in parameters:
-                n = parameters["n"]
-            if "lr" in parameters:
-                lr = parameters["lr"]
-            if "sigma" in parameters:
-                sigma = parameters["sigma"]
-            if "max_iter" in parameters:
-                max_iter = parameters["max_iter"]
-            if "epochs" in parameters:
-                epochs = parameters["epochs"]
+            if "n" in self._parameters:
+                n = self._parameters["n"]
+            if "lr" in self._parameters:
+                lr = self._parameters["lr"]
+            if "sigma" in self._parameters:
+                sigma = self._parameters["sigma"]
+            if "max_iter" in self._parameters:
+                max_iter = self._parameters["max_iter"]
+            if "epochs" in self._parameters:
+                epochs = self._parameters["epochs"]
 
         
         self.n = n

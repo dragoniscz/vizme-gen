@@ -23,12 +23,19 @@ class VisualizationPipeline(abc.ABC):
     def __init__(self, skip_existing: bool = False):
         self._skip_existing = skip_existing
         self._n_samples = np.inf
+        self._parameters = {}
 
-    def skip_existing(self, skip_existing: bool = True):
+    def skip_existing(self, skip_existing: bool = True) -> None:
         self._skip_existing = skip_existing
 
+    def n_samples(self, n_samples = np.inf) -> None:
+        self._n_samples = n_samples
+
+    def setup(self, parameters = None) -> None:
+        self._parameters = parameters if parameters is not None else {}
+
     @abc.abstractmethod
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         pass
 
     @abc.abstractmethod
@@ -69,9 +76,8 @@ class VisualizationPipeline(abc.ABC):
 
         logger.info("Generation finished.")
 
-    def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, n_samples: np.int32, parameters: json.loads) -> None:
-        self._n_samples = n_samples
-        self.fit(data, labels, parameters)
+    def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+        self.fit(data, labels)
         return self.transform(data, labels, output)
 
 

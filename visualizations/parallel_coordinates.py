@@ -12,7 +12,7 @@ class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
         self._stroke_width = stroke_width
         self._bounds = {}
 
-    def fit(self, data: pd.DataFrame, labels: pd.DataFrame, parameters: json.loads) -> None:
+    def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         for column in data.columns:
             self._bounds[column] = (data[column].min(), data[column].max())
 
