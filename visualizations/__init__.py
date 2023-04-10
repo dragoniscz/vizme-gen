@@ -20,8 +20,8 @@ def file_exists(filepath: str) -> bool:
 
 
 class VisualizationPipeline(abc.ABC):
-    def __init__(self, skip_existing: bool = False):
-        self._skip_existing = skip_existing
+    def __init__(self):
+        self._skip_existing = False
         self._n_samples = np.inf
         self._parameters = {}
 

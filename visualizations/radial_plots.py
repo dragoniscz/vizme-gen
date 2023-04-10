@@ -30,8 +30,8 @@ def _rescale(y):
 
 
 class RadialPlotsVisualizationPipeline(VisualizationPipeline):
-    def __init__(self, skip_existing: bool = False):
-        super().__init__(skip_existing)
+    def __init__(self):
+        super().__init__()
         self._parameters = None
         self._colorMap = None
         self._M = None

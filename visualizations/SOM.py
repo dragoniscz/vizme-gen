@@ -9,8 +9,8 @@ from . import VisualizationPipeline
 
 
 class SOMVisualizationPipeline(VisualizationPipeline):
-    def __init__(self, skip_existing: bool = False):
-        super().__init__(skip_existing)
+    def __init__(self):
+        super().__init__()
         self._parameters = None
         self._ordering = None        
 
@@ -45,8 +45,7 @@ class SOMVisualizationPipeline(VisualizationPipeline):
             with positional discounts (rank_pos) SOM is performed
         alpha: float, optional
             Hyperparameter to tune importance of ranking vs. local similarity. 
-        """        
-        self._parameters = parameters
+        """
         # default values
         n = 5
         lr = 1

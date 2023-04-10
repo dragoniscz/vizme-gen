@@ -19,9 +19,9 @@ def main(args):
 
         if args['skip']:
             args['visualization'].skip_existing()
-        if args['n_samples'] is not None:
+        if args['n_samples']:
             args['visualization'].n_samples(args['n_samples'])
-        if args['parameters'] is not None:
+        if args['parameters']:
             args['visualization'].setup(args['parameters'])
 
         args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'])

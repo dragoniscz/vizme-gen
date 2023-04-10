@@ -6,11 +6,20 @@ from . import VisualizationPipeline
 
 
 class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
-    def __init__(self, opacity = 0.1, stroke_width = 2, skip_existing: bool = False):
-        super().__init__(skip_existing)
-        self._opacity = opacity
-        self._stroke_width = stroke_width
+    def __init__(self):
+        super().__init__()
+        self._color = [1, 1, 1]
+        self._opacity = 0.5
+        self._stroke_width = 2
         self._bounds = {}
+
+    def setup(self, parameters = None) -> None:
+        super().setup(parameters)
+        if self._parameters['color']:
+            self._color = self._parameters['color']
+        if self._parameters['opacity']:
+            self._opacity = float(self._parameters['opacity'])
+
 
     def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         for column in data.columns:
@@ -20,7 +29,6 @@ class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
         import plotly.graph_objects as go
 
         fig = go.Figure(data=go.Parcoords(
-            line_color='black',
             dimensions=list(map(
                 lambda column: dict(
                     range=self._bounds[column],
@@ -28,7 +36,10 @@ class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
                     values=(data[column],),
                 ),
                 self._bounds
-            ))
+            )),
+            line=dict(
+                color=f"rgba({self._color[0]}, {self._color[1]}, {self._color[2]}, {self._color[3] if len(self._color) > 3 else self._opacity})",
+            ),
         ))
 
         fig.write_image(output)

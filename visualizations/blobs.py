@@ -5,16 +5,21 @@ import pandas as pd
 from . import VisualizationPipeline
 
 
-MIN_R = 0.025
-MAX_R = 0.2
-
-
 class BlobsVisualizationPipeline(VisualizationPipeline):
-    def __init__(self, skip_existing: bool = False):
-        super().__init__(skip_existing)
+    def __init__(self):
+        super().__init__()
         self._coords = None
         self._means = None
         self._quantize = None
+        self._r_min = 0
+        self._r_max = 0.2
+
+    def setup(self, parameters = None) -> None:
+        super().setup(parameters)
+        if self._parameters['r_min']:
+            self._r_min = float(self._parameters['r_min'])
+        if self._parameters['r_max']:
+            self._r_max = float(self._parameters['r_max'])
 
     def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
         correlation = np.corrcoef(data, rowvar=False)
@@ -41,7 +46,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
 
         fig, ax = plt.subplots()
         for idx, key in enumerate(data.index):
-            ax.add_patch(plt.Circle(self._coords.loc[key], radius=MIN_R + (MAX_R - MIN_R) * np.abs(data[key] - self._means.loc[key]), alpha=0.5, color=cm.seismic(qd[idx])))
+            ax.add_patch(plt.Circle(self._coords.loc[key], radius=self._r_min + (self._r_max - self._r_min) * np.abs(data[key] - self._means.loc[key]), alpha=0.5, color=cm.seismic(qd[idx])))
         ax.axis('off')
         fig.set_size_inches(4, 4)
         plt.savefig(output, pad_inches=0, bbox_inches='tight', transparent=False)
