@@ -23,6 +23,8 @@ def main(args):
             args['visualization'].n_samples(args['n_samples'])
         if args['parameters']:
             args['visualization'].setup(args['parameters'])
+        if args['parametersFile']:
+            args['visualization'].setup(json.load(args['parametersFile']))
 
         if args['groups']:
             args['visualization'].fit_transform_group(dataset, args['datasets'].labels(), args['output'])
@@ -77,10 +79,17 @@ if __name__ == '__main__':
                         required=False,
                         help='Number of samples of each target class. If not provided, all samples will be generated.')
 
-    parser.add_argument('-p', '--parameters',
+    parameters = parser.add_mutually_exclusive_group(required=True)
+
+    parameters.add_argument('-p', '--parameters',
                         default=False,
                         type=json.loads,
                         help='The parameters of the visualization.')
+
+    parameters.add_argument('-f', '--parametersFile',
+                        default=False,
+                        type=argparse.FileType('r'),
+                        help='The json file with parameters of the visualization.')
 
     parser.add_argument('--groups',
                         default=False,

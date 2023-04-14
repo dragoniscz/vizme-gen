@@ -8,6 +8,7 @@ Command line parameters of the framework. TODO
 
 | n_samples | Number of samples for each target class. If not provided, all samples will be generated. | `--n_samples 10`
 | parameters| Visualization specific parameters in json format. | `--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}`
+| parametersFile| File with visualization specific parameters in json format. | `--parametersFile config/radial_default.json`
 
 |===
 
@@ -16,7 +17,15 @@ Command line parameters of the framework. TODO
 ./visualize.py breastCancer blobs _output/breastCancer/blobs --quantize
 ```
 ```
-./visualize.py breastCancer radial _output/breastCancer/radial --quantize "--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}"
+./visualize.py breastCancer radial _output/breastCancer/radial --n_samples 100 --quantize --parametersFile config/radial_default.json
+```
+
+=== Nutrients
+```
+./visualize.py nutrients blobs _output/nutrients/blobs
+```
+```
+./visualize.py nutrients radial _output/nutrients/radial --n_samples 10 --quantize --parametersFile config/radial_default.json
 ```
 
 === Recipes
@@ -35,7 +44,7 @@ Example:
 ./visualize.py spotify blobs _output/spotify/blobs --normalize
 ```
 ```
-./visualize.py spotify radial _output/spotify/radial --quantize --n_samples 100 "--parameters={ \"colorMap\": \"OrangeBlue\", \"bottomMargin\": 25, \"scaleCoeff\": 100, \"correlationOrdering\": true}"
+./visualize.py spotify radial _output/spotify/radial --quantize --n_samples 100 --parametersFile config/radial_default.json
 ```
 
 

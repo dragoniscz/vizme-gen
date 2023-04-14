@@ -1,9 +1,12 @@
 import json
+import logging
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
+from loguru import logger
 
 from util.dataset import get_feature_ordering_order_based_on_correlation
 from . import VisualizationPipeline
@@ -55,9 +58,12 @@ class RadialPlotsVisualizationPipeline(VisualizationPipeline):
             self._ordering = self._colorMap.index
             self._colorMap = self._colorMap[1]
 
-        # TODO mode
+        # TODO ring mode
         if CORRELATION_ORDERING in self._parameters and self._parameters[CORRELATION_ORDERING]:
-            self._ordering = get_feature_ordering_order_based_on_correlation(data)
+            try:
+                self._ordering = get_feature_ordering_order_based_on_correlation(data)
+            except ValueError:
+                logger.warning("Could not compute ordering based on correlation.")
 
         if COLOR_MAP_PARAM in self._parameters:
             color_map = self._parameters[COLOR_MAP_PARAM]
