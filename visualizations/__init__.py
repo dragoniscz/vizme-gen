@@ -68,7 +68,7 @@ class VisualizationPipeline(abc.ABC):
 
         logger.info("Generation finished.")
 
-    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, grouping: str) -> None:
         logger.info("Creating output dir: {0}", output)
         create_folder(output)
 
@@ -80,7 +80,12 @@ class VisualizationPipeline(abc.ABC):
         for target_class in labels_counts.index:
             indexes_class = labels[labels == target_class].index.to_numpy()
             class_idx = np.random.RandomState(seed=42).permutation(indexes_class)[0:labels_counts[target_class]]
-            groups[target_class] = data.loc[class_idx.tolist()].mean()
+            if grouping == 'avg':
+                groups[target_class] = data.loc[class_idx.tolist()].mean()
+            elif grouping == 'med':
+                groups[target_class] = data.loc[class_idx.tolist()].median()
+            else:
+                raise ValueError(f"Unsupported grouping '{grouping}'.")
 
         logger.info("Starting the generation of visualizations.")
 
@@ -92,9 +97,9 @@ class VisualizationPipeline(abc.ABC):
 
         logger.info("Generation finished.")
 
-    def fit_transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+    def fit_transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, grouping: str) -> None:
         self.fit(data, labels)
-        return self.transform_group(data, labels, output)
+        return self.transform_group(data, labels, output, grouping)
 
     def fit_transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
         self.fit(data, labels)

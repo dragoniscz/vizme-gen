@@ -26,11 +26,10 @@ def main(args):
         if args['parametersFile']:
             args['visualization'].setup(json.load(args['parametersFile']))
 
-        if args['groups']:
-            args['visualization'].fit_transform_group(dataset, args['datasets'].labels(), args['output'])
-            return 0
-
         args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'])
+
+        if args['groups'] is not None:
+            args['visualization'].transform_group(dataset, args['datasets'].labels(), args['output'], args['groups'])
         return 0
     except FileNotFoundError as err:
         logger.error(f'Cannot load datasets.')
@@ -79,7 +78,7 @@ if __name__ == '__main__':
                         required=False,
                         help='Number of samples of each target class. If not provided, all samples will be generated.')
 
-    parameters = parser.add_mutually_exclusive_group(required=True)
+    parameters = parser.add_mutually_exclusive_group(required=False)
 
     parameters.add_argument('-p', '--parameters',
                         default=False,
@@ -92,8 +91,9 @@ if __name__ == '__main__':
                         help='The json file with parameters of the visualization.')
 
     parser.add_argument('--groups',
-                        default=False,
-                        action='store_true',
-                        help='Generate visualization for group of data')
+                        default=None,
+                        choices=['avg', 'med', 'special'],
+                        type=str,
+                        help='Generate visualization for group of data too.')
 
     exit(main(vars(parser.parse_args())))

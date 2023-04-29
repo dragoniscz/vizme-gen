@@ -11,17 +11,19 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         self._coords = None
         self._means = None
         self._quantize = None
-        self._r_min = 0.025
+        self._r_min = 0.0
         self._r_max = 0.2
 
     def setup(self, parameters = None) -> None:
         super().setup(parameters)
-        if self._parameters['r_min']:
+        if self._parameters['r_min'] is not None:
             self._r_min = float(self._parameters['r_min'])
         if self._parameters['r_max']:
             self._r_max = float(self._parameters['r_max'])
 
     def fit(self, data: pd.DataFrame, labels: pd.DataFrame) -> None:
+        data = data[data.columns.difference(data.columns[data.isnull().any(axis=0)].tolist())]
+
         correlation = np.corrcoef(data, rowvar=False)
         assert correlation.shape[0] == len(data.columns) and correlation.shape[1] == len(data.columns)
 
@@ -38,7 +40,7 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         from sklearn.preprocessing import QuantileTransformer
         self._quantize = make_pipeline(QuantileTransformer(n_quantiles=25)).fit(data.to_numpy())
 
-    def transform_one(self, data: pd.DataFrame, output: str) -> None:
+    def transform_one(self, data: pd.Series, output: str) -> None:
         import matplotlib.pyplot as plt
         from matplotlib import cm
 
@@ -53,9 +55,18 @@ class BlobsVisualizationPipeline(VisualizationPipeline):
         plt.close(fig)
 
     def transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+        data = data[data.columns.difference(data.columns[data.isnull().any(axis=0)].tolist())]
+
         if self._coords is None:
             raise SyntaxError('Method ::fit must called before ::transform.')
         super().transform(data, labels, output)
+
+    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, grouping: str) -> None:
+        data = data[data.columns.difference(data.columns[data.isnull().any(axis=0)].tolist())]
+
+        if self._coords is None:
+            raise SyntaxError('Method ::fit must called before ::transform.')
+        super().transform_group(data, labels, output, grouping)
 
 
 

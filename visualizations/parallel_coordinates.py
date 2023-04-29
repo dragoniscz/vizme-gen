@@ -46,7 +46,11 @@ class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
 
         fig.write_image(output)
 
-    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+    def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, grouping: str) -> None:
+        if grouping != 'special':
+            super().transform_group(data, labels, output, grouping)
+            return
+
         logger.info("Creating output dir: {0}", output)
         create_folder(output)
 
