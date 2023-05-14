@@ -5,12 +5,17 @@ import numpy as np
 from loguru import logger
 
 from vizme.preprocessing import normalize, quantize
+from util.dataset import get_samples_for_labels
 
 
 def main(args):
     try:
         dataset = args['datasets'].data()
         assert isinstance(dataset, pd.DataFrame)
+        labels = args['datasets'].labels()
+
+        if args['n_samples']:
+            dataset, labels = get_samples_for_labels(args['n_samples'], dataset, labels)
 
         if args['quant']:
             dataset = quantize(dataset)
@@ -19,17 +24,15 @@ def main(args):
 
         if args['skip']:
             args['visualization'].skip_existing()
-        if args['n_samples']:
-            args['visualization'].n_samples(args['n_samples'])
         if args['parameters']:
             args['visualization'].setup(args['parameters'])
         if args['parametersFile']:
             args['visualization'].setup(json.load(args['parametersFile']))
 
-        args['visualization'].fit_transform(dataset, args['datasets'].labels(), args['output'])
+        args['visualization'].fit_transform(dataset, labels, args['output'])
 
         if args['groups'] is not None:
-            args['visualization'].transform_group(dataset, args['datasets'].labels(), args['output'], args['groups'])
+            args['visualization'].transform_group(dataset, labels, args['output'], args['groups'])
         return 0
     except FileNotFoundError as err:
         logger.error(f'Cannot load datasets.')

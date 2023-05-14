@@ -19,8 +19,7 @@ def get_feature_ordering_order_based_on_correlation(df):
     return pd.Series(features_order)
 
 
-#
-def get_samples_for_labels(n_samples, data: pd.DataFrame, labels: pd.DataFrame):
+def get_samples_for_labels(n_samples: int, data: pd.DataFrame, labels: pd.DataFrame):
     """
     Returns sample from the data based on the data labes.
     :param n_samples: Specify the number of samples for each label. If greater than count of objects for the particular

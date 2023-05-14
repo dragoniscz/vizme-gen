@@ -1,12 +1,9 @@
 import abc
 import argparse
-import json
 import os
 import pandas as pd
 import numpy as np
 from loguru import logger
-
-from util.dataset import get_samples_for_labels
 
 
 def create_folder(directory: str) -> None:
@@ -25,14 +22,10 @@ def file_exists(filepath: str) -> bool:
 class VisualizationPipeline(abc.ABC):
     def __init__(self):
         self._skip_existing = False
-        self._n_samples = np.inf
         self._parameters = {}
 
     def skip_existing(self, skip_existing: bool = True) -> None:
         self._skip_existing = skip_existing
-
-    def n_samples(self, n_samples = np.inf) -> None:
-        self._n_samples = n_samples
 
     def setup(self, parameters = None) -> None:
         self._parameters = parameters if parameters is not None else {}
@@ -46,18 +39,19 @@ class VisualizationPipeline(abc.ABC):
         pass
 
     def transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
+        print(data.shape[0])
+        print(labels.shape[0])
+        assert data.shape[0] == labels.shape[0]
+
         logger.info("Creating output dir: {0}", output)
         create_folder(output)
-
-        (samples, samples_labels) = get_samples_for_labels(self._n_samples, data, labels)
 
         logger.info("Starting the generation of visualizations.")
 
         from tqdm import tqdm
-        for i in tqdm(range(0, samples.shape[0])):
-        #for key, label in tqdm(zip(data.index, labels), total=data.shape[0]):
-            label = samples_labels.iloc[i]
-            sample = samples.iloc[i]
+        for i in tqdm(range(0, data.shape[0])):
+            label = labels.iloc[i]
+            sample = data.iloc[i]
 
             directory = f"{output}/{label}"
             if not os.path.isdir(directory):
@@ -69,21 +63,20 @@ class VisualizationPipeline(abc.ABC):
         logger.info("Generation finished.")
 
     def transform_group(self, data: pd.DataFrame, labels: pd.DataFrame, output: str, grouping: str) -> None:
+        assert data.shape[0] == labels.shape[0]
+
         logger.info("Creating output dir: {0}", output)
         create_folder(output)
 
-        labels_counts = labels.value_counts().apply(lambda x: x if x <= self._n_samples else self._n_samples)
-        total_samples = labels_counts.sum()
-        logger.info("Found {0} target classes, {1} samples at total.", labels_counts.index.shape[0], total_samples)
+        labels_counts = labels.value_counts()
 
         groups = {}
         for target_class in labels_counts.index:
             indexes_class = labels[labels == target_class].index.to_numpy()
-            class_idx = np.random.RandomState(seed=42).permutation(indexes_class)[0:labels_counts[target_class]]
             if grouping == 'avg':
-                groups[target_class] = data.loc[class_idx.tolist()].mean()
+                groups[target_class] = data.loc[indexes_class].mean()
             elif grouping == 'med':
-                groups[target_class] = data.loc[class_idx.tolist()].median()
+                groups[target_class] = data.loc[indexes_class].median()
             else:
                 raise ValueError(f"Unsupported grouping '{grouping}'.")
 
