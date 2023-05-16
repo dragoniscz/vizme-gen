@@ -35,12 +35,10 @@ class VisualizationPipeline(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def transform_one(self, data: pd.DataFrame, output: str) -> None:
+    def transform_one(self, data: pd.Series, output: str) -> None:
         pass
 
     def transform(self, data: pd.DataFrame, labels: pd.DataFrame, output: str) -> None:
-        print(data.shape[0])
-        print(labels.shape[0])
         assert data.shape[0] == labels.shape[0]
 
         logger.info("Creating output dir: {0}", output)
@@ -104,12 +102,14 @@ class Parse(argparse.Action):
     from .radial_plots import RadialPlotsVisualizationPipeline
     from .SOM import SOMVisualizationPipeline
     from .parallel_coordinates import ParallelCoordinatesVisualizationPipeline
+    from .table import TableVisualizationPipeline
 
     choices = {
         'blobs': BlobsVisualizationPipeline(),
         'radial': RadialPlotsVisualizationPipeline(),
         'SOM': SOMVisualizationPipeline(),
         'parallel': ParallelCoordinatesVisualizationPipeline(),
+        'table': TableVisualizationPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):

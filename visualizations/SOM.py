@@ -355,7 +355,7 @@ class SOMVisualizationPipeline(VisualizationPipeline):
            
 
 
-    def transform_one(self, data: pd.DataFrame, output: str) -> None:
+    def transform_one(self, data: pd.Series, output: str) -> None:
         #print(data.shape)
         coordsDF = self._calculate_image_grid(data)
         #print(coordsDF)

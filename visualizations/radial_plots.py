@@ -78,7 +78,7 @@ class RadialPlotsVisualizationPipeline(VisualizationPipeline):
         if BOTTOM_MARGIN_PARAM in self._parameters:
             self._bottomMargin = self._parameters[BOTTOM_MARGIN_PARAM]
 
-    def transform_one(self, data: pd.DataFrame, output: str) -> None:
+    def transform_one(self, data: pd.Series, output: str) -> None:
 
         fig = plt.figure(figsize=(4, 4))
         ax = plt.subplot(111, projection='polar')

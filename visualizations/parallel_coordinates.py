@@ -27,7 +27,7 @@ class ParallelCoordinatesVisualizationPipeline(VisualizationPipeline):
         for column in data.columns:
             self._bounds[column] = (data[column].min(), data[column].max())
 
-    def transform_one(self, data: pd.DataFrame, output: str) -> None:
+    def transform_one(self, data: pd.Series, output: str) -> None:
         import plotly.graph_objects as go
 
         fig = go.Figure(data=go.Parcoords(
