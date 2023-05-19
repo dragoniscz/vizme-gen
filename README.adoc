@@ -53,7 +53,7 @@ Example:
 ./visualize.py spotify radial _output/spotify/radial --quantize --n_samples 100 --parametersFile config/radial_default.json
 ```
 ```
-./visualize.py spotify faces _output/spotify/faces --groups med --n_samples 100 --quantize
+./visualize.py spotify faces _output/spotify/faces --groups med --n_samples 100 --normalize
 ```
 
 
