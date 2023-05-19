@@ -103,6 +103,7 @@ class Parse(argparse.Action):
     from .SOM import SOMVisualizationPipeline
     from .parallel_coordinates import ParallelCoordinatesVisualizationPipeline
     from .table import TableVisualizationPipeline
+    from .chernoff_faces import ChernoffFaceVisualizationPipeline
 
     choices = {
         'blobs': BlobsVisualizationPipeline(),
@@ -110,6 +111,7 @@ class Parse(argparse.Action):
         'SOM': SOMVisualizationPipeline(),
         'parallel': ParallelCoordinatesVisualizationPipeline(),
         'table': TableVisualizationPipeline(),
+        'faces': ChernoffFaceVisualizationPipeline(),
     }
 
     def __init__(self, option_strings, dest, **kwargs):

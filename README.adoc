@@ -19,6 +19,9 @@ Command line parameters of the framework. TODO
 ```
 ./visualize.py breastCancer radial _output/breastCancer/radial --n_samples 100 --quantize --parametersFile config/radial_default.json
 ```
+```
+./visualize.py breastCancer faces _output/breastCancer/faces --groups med --n_samples 100 --quantize
+```
 
 === Nutrients
 ```
@@ -26,6 +29,9 @@ Command line parameters of the framework. TODO
 ```
 ```
 ./visualize.py nutrients radial _output/nutrients/radial --n_samples 10 --quantize --parametersFile config/radial_default.json
+```
+```
+./visualize.py nutrients faces _output/nutrients/faces --groups med --n_samples 100 --quantize
 ```
 
 === Recipes
@@ -46,6 +52,10 @@ Example:
 ```
 ./visualize.py spotify radial _output/spotify/radial --quantize --n_samples 100 --parametersFile config/radial_default.json
 ```
+```
+./visualize.py spotify faces _output/spotify/faces --groups med --n_samples 100 --quantize
+```
+
 
 
 == Average component
@@ -56,6 +66,13 @@ Examples:
 ./average.py _output/recipes/radial
 ./average.py _output/spotify/blobs
 ./average.py _output/spotify/radial
+```
+
+=== Selected averaging for datasets
+```
+./visualize.py breastCancer radial _output/breastCancer/radial --n_samples 100 --quantize --groups med --parametersFile config/radial_default.json
+
+python visualize.py nutrients radial _output/nutrients/radial --quantize --n_samples 100 --groups med --parametersFile config/radial_default.json
 ```
 
 Takes folders in "output" folder and makes average of all image in this subfolder.
