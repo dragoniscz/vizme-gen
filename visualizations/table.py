@@ -16,4 +16,4 @@ class TableVisualizationPipeline(VisualizationPipeline):
             frame = data.to_frame()
             if INVERT_PARAM in self._parameters and self._parameters[INVERT_PARAM]:
                 frame = frame.transpose()
-            frame.to_html(file)
+            frame.to_html(file, index=False, float_format='%.2f')

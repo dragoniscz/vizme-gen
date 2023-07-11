@@ -13,6 +13,9 @@ Command line parameters of the framework. TODO
 |===
 
 === Breast cancer
+
+Source: https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+(diagnostic)
+
 ```
 ./visualize.py breastCancer blobs _output/breastCancer/blobs --quantize
 ```
@@ -24,6 +27,9 @@ Command line parameters of the framework. TODO
 ```
 
 === Nutrients
+
+Source: https://github.com/syntagmatic/parallel-coordinates/blob/master/examples/data/nutrients.csv
+
 ```
 ./visualize.py nutrients blobs _output/nutrients/blobs
 ```
@@ -35,6 +41,11 @@ Command line parameters of the framework. TODO
 ```
 
 === Recipes
+
+Source: https://osf.io/cpfwj
+
+Source: https://www.kaggle.com/datasets/elisaxxygao/foodrecsysv1?select=core-data_recipe.csv
+
 ```
 ./visualize.py recipes blobs _output/recipes/blobs
 ```
@@ -43,7 +54,8 @@ Command line parameters of the framework. TODO
 ```
 
 === Spotify
-Takes spotify dataset (with normalization) and visualize it like blobs. Images are saved into "output" folder.
+
+Source: https://www.kaggle.com/datasets/zaheenhamidani/ultimate-spotify-tracks-db
 
 Example:
 ```
@@ -56,7 +68,7 @@ Example:
 ./visualize.py spotify faces _output/spotify/faces --groups med --n_samples 100 --normalize
 ```
 
-
+Takes spotify dataset (with normalization) and visualize it like blobs. Images are saved into "output" folder.
 
 == Average component
 
@@ -76,3 +88,11 @@ python visualize.py nutrients radial _output/nutrients/radial --quantize --n_sam
 ```
 
 Takes folders in "output" folder and makes average of all image in this subfolder.
+
+== Authors
+
+- David Bernhauer
+- David Hoksza
+- Ladislav Peška
+- Ivana Sixtová
+- Tomáš Skopal

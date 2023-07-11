@@ -51,7 +51,7 @@ def process(directory, category):
     files = get_files(directory + "/" + category)
     if len(files) != 0:
         output = merge_files(files)
-        save_image(output, directory + "/average_" + category + '.png')
+        save_image(output, directory + "/" + category + '.png')
 
         gy, gx = np.gradient((output[:, :, 0] + output[:, :, 1] + output[:, :, 2]) / 2)
         sharpness = np.average(np.sqrt(gx**2 + gy**2))

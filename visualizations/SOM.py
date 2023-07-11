@@ -188,6 +188,7 @@ class SOMVisualizationPipeline(VisualizationPipeline):
         #print(self._feature_coords)
 
         self._train_normalization(data)
+        self._train_mean_image(data)
         return     
 
 
@@ -340,6 +341,19 @@ class SOMVisualizationPipeline(VisualizationPipeline):
 
         return     
 
+    def _train_mean_image(self, data: pd.DataFrame):
+        #data: dataframe of all images
+        coordsDF = pd.DataFrame({"keys":[],"vals": []})
+
+        for idx, row in data.iterrows():
+            coordsDF = coordsDF.append(self._calculate_image_grid(row))
+
+        coordsDF = coordsDF.groupby("keys").mean().reset_index()
+
+        #print(coordsDF)
+        self._coordsDF = coordsDF
+        return
+
 
     def _displayOneElement(self, ax, x, y, color):
         rect = patches.Rectangle((x, y), 1, 1, linewidth=1, edgecolor='none', facecolor=color)
@@ -365,7 +379,18 @@ class SOMVisualizationPipeline(VisualizationPipeline):
         for idx,row in coordsDF.iterrows():
             pos = self._locations[idx,:]
             #print(pos)
-            self._displayOneElement(ax,pos[0],pos[1],[1,1-row["vals"],1-row["vals"],1])
+            coordMean = self._coordsDF.loc[idx,"vals"]
+            epsilon = 10e-6
+            if row["vals"] - coordMean >=0 : #red area
+                blueCol = 1 - ((row["vals"] - coordMean) / (1 - coordMean + epsilon))
+                greenCol = blueCol
+                redCol = 1
+            else:
+                redCol =  (coordMean - row["vals"]) / (coordMean + epsilon)
+                greenCol = redCol
+                blueCol = 1
+
+            self._displayOneElement(ax,pos[0],pos[1],[redCol,greenCol,blueCol,1])
         
         self._finalizeImage(ax,"",self.n)
 
